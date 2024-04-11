@@ -8,4 +8,5 @@ class Instruction
     public int $argCount;
     /** @var array<Argument> $args*/
     public $args;
+    public int $order;
 }

@@ -2,11 +2,12 @@
 
 namespace IPP\Student\Enums;
 
-enum ArgType
+enum ArgType: string
 {
-    case VAR;
-    case INT;
-    case STRING;
-    case BOOL;
-    case NIL;
+    case VAR = 'var';
+    case INT = 'int';
+    case STRING = 'string';
+    case BOOL = 'bool';
+    case NIL = 'nil';
+    case LABEL = 'label';
 }

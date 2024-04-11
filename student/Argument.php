@@ -10,4 +10,14 @@ class Argument
     public $type;
     /** @var mixed $value */
     public $value;
+
+    /**
+    * @param ArgType $type
+    * @param mixed $value
+    */
+    public function __construct($type, $value)
+    {
+        $this->type = $type;
+        $this->value = $value;
+    }
 }
