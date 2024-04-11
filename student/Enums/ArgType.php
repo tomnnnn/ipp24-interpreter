@@ -2,10 +2,11 @@
 
 namespace IPP\Student\Enums;
 
-enum VariableType
+enum ArgType
 {
-    case BOOL;
+    case VAR;
     case INT;
     case STRING;
+    case BOOL;
     case NIL;
 }

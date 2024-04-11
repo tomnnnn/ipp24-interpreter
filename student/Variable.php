@@ -12,7 +12,6 @@ class Variable
     public $contents;
 
     /**
-     * Variable constructor.
      * @param string $name
      * @param mixed $contents
      */
@@ -20,10 +19,5 @@ class Variable
     {
         $this->name = $name;
         $this->contents = $contents;
-    }
-
-    public function test(int $a, string $b): int
-    {
-        return 0;
     }
 }
