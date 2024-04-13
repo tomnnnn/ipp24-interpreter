@@ -2,6 +2,8 @@
 
 namespace IPP\Student;
 
+use IPP\Student\Argument\Argument;
+
 class Instruction
 {
     public string $opcode;
