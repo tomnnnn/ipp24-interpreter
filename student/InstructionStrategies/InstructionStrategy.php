@@ -3,7 +3,7 @@
 namespace IPP\Student\InstructionStrategies;
 
 use IPP\Student\InterpreterContext;
-use IPP\Student\Argument;
+use IPP\Student\Argument\Argument;
 
 interface InstructionStrategy
 {
