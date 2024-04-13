@@ -2,22 +2,22 @@
 
 namespace IPP\Student;
 
-use IPP\Student\Enums\VariableType;
+use IPP\Student\Enums\DataType;
 
 class Variable
 {
     public string $name;
-    public VariableType $type;
-    /** @var mixed variable contents*/
+    public ?DataType $dataType;
+    /** @var bool|int|string|null variable contents*/
     public $contents;
 
     /**
      * @param string $name
-     * @param mixed $contents
      */
-    public function __construct(string $name, $contents)
+    public function __construct(string $name)
     {
         $this->name = $name;
-        $this->contents = $contents;
+        $this->dataType = null;
+        $this->contents = null;
     }
 }
