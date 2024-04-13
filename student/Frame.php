@@ -2,6 +2,9 @@
 
 namespace IPP\Student;
 
+use IPP\Student\Enums\DataType;
+use IPP\Student\Exception\VariableAccessException;
+
 class Frame
 {
     /** @var array<Variable> $variables */
@@ -9,22 +12,45 @@ class Frame
 
     /**
      * @param Variable $var Variable to be inserted
-     * @return void
+     * @return bool True if the variable has been inserted, false if it already exists
      */
-    public function insertVariable(Variable $var): void
+    public function insertVariable(Variable $var): bool
     {
-        $this->variables[$var->name] = $var;
+        if(!array_key_exists($var->name, $this->variables)) {
+            $this->variables[$var->name] = $var;
+            return true;
+        }
+
+        return false;
     }
 
     /**
     * @param string $name Name of the variable
-    * @return Variable|null The variable or null if variable doesnt exist in the frame
+    * @return Variable Returns the specified variable, otherwise throws.
+    *
+    * @throws VariableAccessException If the specified variable does not exist in the frame
     */
-    public function getVariable(string $name): ?Variable
+    public function getVariable(string $name): Variable
     {
         if(!array_key_exists($name, $this->variables)) {
-            return null;
+            throw new VariableAccessException();
         }
         return $this->variables[$name];
+    }
+    /**
+     * Updates specified variable.
+     * @param int|bool|string $value
+     * @param DataType $dataType
+     *
+     * @throws VariableAccessException If the variable does not exist
+     */
+    public function updateVariable(string $name, $value, $dataType): void
+    {
+        if(array_key_exists($name, $this->variables)) {
+            $this->variables[$name]->contents = $value;
+            $this->variables[$name]->dataType = $dataType;
+        } else {
+            throw new VariableAccessException();
+        }
     }
 }
