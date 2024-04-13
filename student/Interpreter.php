@@ -6,7 +6,12 @@ use DOMDocument;
 use DOMElement;
 use IPP\Core\AbstractInterpreter;
 use IPP\Core\ReturnCode;
+use IPP\Student\Argument\ConstArgument;
+use IPP\Student\Argument\LabelArgument;
+use IPP\Student\Argument\VarArgument;
+use IPP\Student\Argument\Argument;
 use IPP\Student\Enums\ArgType;
+use IPP\Student\Enums\DataType;
 use IPP\Student\Exception\SourceFormatException;
 use IPP\Student\Factories\InstructionFactory;
 
@@ -25,7 +30,7 @@ class Interpreter extends AbstractInterpreter
         // Get label positions
         foreach($instructions as $key => $instruction) {
             if($instruction->opcode == "LABEL") {
-                $label = $instruction->args[0]->value;
+                $label = $instruction->args[0]->getValue();
                 $context->labelPositions[$label] = $key;
             }
         }
@@ -42,7 +47,7 @@ class Interpreter extends AbstractInterpreter
             $instructionStrategy = $instructionStrategyFactory->createInstructionStrategy($instruction->opcode);
 
             $context->setInstruction($instructionStrategy);
-            // TODO execute instruction
+            $context->executeInstruction($instruction->args);
         }
     }
 
@@ -55,18 +60,31 @@ class Interpreter extends AbstractInterpreter
         $args = array();
         $argEl = $instructionElement->firstElementChild;
         while(!is_null($argEl)) {
-            $type = ArgType::tryFrom($argEl->getAttribute('type'))
+            $type = ArgType::deserialize($argEl->getAttribute('type'))
                 ?? throw new SourceFormatException();
-            $value = $argEl->nodeValue;
+            $value = $argEl->textContent;
 
-            $arg = new Argument($type, $value);
+            // TODO factory
+            switch($type) {
+                case ArgType::VAR:
+                    $arg = new VarArgument($value);
+                    break;
+                case ArgType::CONST:
+                    $dataType = DataType::tryFrom($argEl->getAttribute('type'))
+                        ?? throw new SourceFormatException();
+                    $arg = new ConstArgument($value, $dataType);
+                    break;
+                case ArgType::LABEL:
+                    $arg = new LabelArgument($value);
+                    break;
+            }
+
             array_push($args, $arg);
 
             $argEl = $argEl->nextElementSibling;
         }
         return $args;
     }
-
     /**
     * Converts the given DOM Document to array of Instructions, sorted by order attribute
     * @param DOMDocument $dom
@@ -106,7 +124,7 @@ class Interpreter extends AbstractInterpreter
         // $this->stdout->writeString("stdout");
         // $this->stderr->writeString("stderr");
 
-        $context = new InterpreterContext();
+        $context = new InterpreterContext($this->stdout, $this->stderr);
         $instructionStrategyFactory = new InstructionFactory();
         $instructions = $this->DOMToSortedInstructions($this->source->getDOMDocument());
 
