@@ -7,8 +7,8 @@ use IPP\Core\ReturnCode;
 
 class VariableAccessException extends IPPException
 {
-    public function __construct(string $message = "ERROR: Access to non-existent variable")
+    public function __construct(string $message = "Access to non-existent variable")
     {
-        parent::__construct($message, ReturnCode::VARIABLE_ACCESS_ERROR);
+        parent::__construct($message, ReturnCode::VARIABLE_ACCESS_ERROR, showTrace: false);
     }
 }

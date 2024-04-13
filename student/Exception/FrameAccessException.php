@@ -9,6 +9,6 @@ class FrameAccessException extends IPPException
 {
     public function __construct(string $message = "Access to non-existent frame")
     {
-        parent::__construct($message, ReturnCode::FRAME_ACCESS_ERROR)
+        parent::__construct($message, ReturnCode::FRAME_ACCESS_ERROR, showTrace: false);
     }
 }

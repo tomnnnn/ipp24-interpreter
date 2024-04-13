@@ -7,8 +7,8 @@ use IPP\Core\ReturnCode;
 
 class OperandValueException extends IPPException
 {
-    public function __construct(string $message = "ERROR: Invalid operand value")
+    public function __construct(string $message = "Invalid operand value")
     {
-        parent::__construct($message, code: ReturnCode::OPERAND_VALUE_ERROR);
+        parent::__construct($message, code: ReturnCode::OPERAND_VALUE_ERROR, showTrace: false);
     }
 }

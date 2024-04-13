@@ -9,6 +9,6 @@ class SourceFormatException extends IPPException
 {
     public function __construct(string $message = "Invalid XML source structure")
     {
-        parent::__construct($message, ReturnCode::INVALID_SOURCE_STRUCTURE);
+        parent::__construct($message, ReturnCode::INVALID_SOURCE_STRUCTURE, showTrace: false);
     }
 }
